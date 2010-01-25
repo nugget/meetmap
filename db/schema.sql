@@ -47,7 +47,7 @@ CREATE VIEW meetings_expanded AS
     m.*, 
 	er.username AS meeter_username,
 	ee.username AS meetee_username,
-	(SELECT TRUE FROM meetings m2 WHERE m2.meeter = m.meetee AND m2.meetee = m.meeter) AS reciprocal
+	COALESCE((SELECT TRUE FROM meetings m2 WHERE m2.meeter = m.meetee AND m2.meetee = m.meeter),FALSE) AS reciprocal
   FROM meetings m
   LEFT JOIN users er ON er.id = m.meeter
   LEFT JOIN users ee ON ee.id = m.meetee
